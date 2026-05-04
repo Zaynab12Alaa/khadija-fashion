@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}KHADIJA Fashion — Home{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-tag">✦ New Collection 2026</p>
+    <h1 class="hero-title">Fashion Is<br/>Your <em>Story</em>,<br/>Own It.</h1>
+    <p class="hero-sub">Where bold personality meets timeless elegance. Curated for the girl who knows exactly who she is.</p>
+    <div class="hero-btns">
+      <a href="{{ url_for('shop') }}" class="btn-primary">Shop the Collection</a>
+      <a href="{{ url_for('lookbook') }}" class="btn-ghost">Lookbook</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="card-season">SS 2026</div>
+      <div class="hero-icon">👗</div>
+      <p class="card-label">The Brand</p>
+      <p class="card-name">KHADIJA</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    {% for _ in range(4) %}
+    <span>New Collection</span><span class="dot">✦</span>
+    <span>Khadija Fashion</span><span class="dot">✦</span>
+    <span>Style Is Power</span><span class="dot">✦</span>
+    <span>Own Your Look</span><span class="dot">✦</span>
+    <span>SS 2026</span><span class="dot">✦</span>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <p class="section-label">✦ Curated Pieces</p>
+  <div class="section-header">
+    <h2 class="section-title">Featured Collection</h2>
+    <a href="{{ url_for('shop') }}" class="see-all">View All →</a>
+  </div>
+  <div class="products-grid">
+    {% for p in featured %}
+    <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-card">
+      <div class="product-img">
+        {% if p.image %}<img src="{{ url_for('static', filename='images/products/' + p.image) }}" alt="{{ p.name }}"/>
+        {% else %}<span class="product-emoji">👗</span>{% endif %}
+        {% if p.badge %}<span class="product-badge">{{ p.badge }}</span>{% endif %}
+      </div>
+      <div class="product-info">
+        <p class="product-name">{{ p.name }}</p>
+        <p class="product-cat">{{ p.category }}</p>
+        <p class="product-price">${{ '%.2f'|format(p.price) }}</p>
+      </div>
+    </a>
+    {% else %}
+    <p style="color:#8a7068;grid-column:1/-1;text-align:center;padding:3rem;">No products yet — add some from the admin panel.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ABOUT STRIP -->
+<section class="about-strip">
+  <div class="about-quote">
+    <blockquote>"Fashion isn't what you wear — it's how you make the world <span>feel</span> when you walk in."</blockquote>
+  </div>
+  <div class="about-body">
+    <p>KHADIJA is built on one belief: every girl deserves to feel like the main character. Our collections blend modern edge with graceful femininity.</p>
+    <p class="about-sig">— Khadija ✦</p>
+  </div>
+</section>
+
+<!-- LOOKBOOK PREVIEW -->
+{% if lookbook %}
+<section class="section">
+  <p class="section-label">✦ Visual Stories</p>
+  <div class="section-header">
+    <h2 class="section-title">Lookbook</h2>
+    <a href="{{ url_for('lookbook') }}" class="see-all">Full Lookbook →</a>
+  </div>
+  <div class="lookbook-grid">
+    {% for item in lookbook %}
+    <div class="lookbook-card">
+      {% if item.image %}<img src="{{ url_for('static', filename='images/products/' + item.image) }}" alt="{{ item.title }}"/>
+      {% else %}<div class="lookbook-placeholder">✨</div>{% endif %}
+      <div class="lookbook-info">
+        <p>{{ item.title }}</p>
+        <small>{{ item.season }}</small>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- BLOG PREVIEW -->
+{% if blog_posts %}
+<section class="section section-light">
+  <p class="section-label">✦ The Journal</p>
+  <div class="section-header">
+    <h2 class="section-title">Latest Posts</h2>
+    <a href="{{ url_for('blog') }}" class="see-all">All Posts →</a>
+  </div>
+  <div class="blog-grid">
+    {% for post in blog_posts %}
+    <a href="{{ url_for('blog_post', pid=post.id) }}" class="blog-card">
+      <div class="blog-img">
+        {% if post.image %}<img src="{{ url_for('static', filename='images/products/' + post.image) }}" alt="{{ post.title }}"/>
+        {% else %}<div class="blog-placeholder">📝</div>{% endif %}
+      </div>
+      <div class="blog-info">
+        <p class="blog-date">{{ post.created.strftime('%B %d, %Y') }}</p>
+        <h3>{{ post.title }}</h3>
+        <p class="blog-excerpt">{{ post.excerpt or post.content[:120] }}...</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{% block title %}Admin — KHADIJA{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}"/>
+</head>
+<body class="admin-body">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">KH<span>A</span>DIJA <small>Admin</small></div>
+  <nav class="sidebar-nav">
+    <a href="{{ url_for('admin_dashboard') }}" {% if request.endpoint=='admin_dashboard' %}class="active"{% endif %}>📊 Dashboard</a>
+    <a href="{{ url_for('admin_products') }}" {% if 'product' in request.endpoint %}class="active"{% endif %}>👗 Products</a>
+    <a href="{{ url_for('admin_blog') }}"     {% if 'blog' in request.endpoint %}class="active"{% endif %}>📝 Blog</a>
+    <a href="{{ url_for('admin_lookbook') }}" {% if 'lookbook' in request.endpoint %}class="active"{% endif %}>📸 Lookbook</a>
+    <a href="{{ url_for('admin_messages') }}" {% if request.endpoint=='admin_messages' %}class="active"{% endif %}>💬 Messages</a>
+    <hr/>
+    <a href="{{ url_for('index') }}" target="_blank">🌐 View Site</a>
+    <a href="{{ url_for('admin_logout') }}" class="logout">🚪 Logout</a>
+  </nav>
+</aside>
+
+<div class="admin-main">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-container">
+    {% for cat, msg in messages %}
+    <div class="flash flash-{{ cat }}">{{ msg }} <button onclick="this.parentElement.remove()">×</button></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

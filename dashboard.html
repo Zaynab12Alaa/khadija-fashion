@@ -1,0 +1,62 @@
+{% extends 'admin/base.html' %}
+{% block title %}Dashboard — KHADIJA Admin{% endblock %}
+{% block content %}
+<div class="admin-page-header">
+  <h1>Dashboard</h1>
+  <p>Welcome back, {{ session.admin }} ✨</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">👗</div>
+    <div class="stat-num">{{ stats.products }}</div>
+    <div class="stat-label">Products</div>
+    <a href="{{ url_for('admin_products') }}" class="stat-link">Manage →</a>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">📝</div>
+    <div class="stat-num">{{ stats.posts }}</div>
+    <div class="stat-label">Blog Posts</div>
+    <a href="{{ url_for('admin_blog') }}" class="stat-link">Manage →</a>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">📸</div>
+    <div class="stat-num">{{ stats.lookbook }}</div>
+    <div class="stat-label">Lookbook Items</div>
+    <a href="{{ url_for('admin_lookbook') }}" class="stat-link">Manage →</a>
+  </div>
+  <div class="stat-card {% if stats.messages > 0 %}stat-alert{% endif %}">
+    <div class="stat-icon">💬</div>
+    <div class="stat-num">{{ stats.messages }}</div>
+    <div class="stat-label">Unread Messages</div>
+    <a href="{{ url_for('admin_messages') }}" class="stat-link">View →</a>
+  </div>
+</div>
+
+<div class="quick-actions">
+  <h2>Quick Actions</h2>
+  <div class="qa-grid">
+    <a href="{{ url_for('admin_product_new') }}" class="qa-btn">+ Add Product</a>
+    <a href="{{ url_for('admin_blog_new') }}" class="qa-btn">+ New Blog Post</a>
+    <a href="{{ url_for('admin_lookbook_new') }}" class="qa-btn">+ Add to Lookbook</a>
+    <a href="{{ url_for('admin_messages') }}" class="qa-btn">View Messages</a>
+  </div>
+</div>
+
+{% if messages %}
+<div class="recent-section">
+  <h2>Recent Messages</h2>
+  <div class="messages-list">
+    {% for msg in messages %}
+    <div class="msg-row">
+      <div class="msg-info">
+        <strong>{{ msg.name }}</strong> <span>{{ msg.email }}</span>
+        <p>{{ msg.message[:120] }}{% if msg.message|length > 120 %}...{% endif %}</p>
+      </div>
+      <div class="msg-date">{{ msg.created.strftime('%b %d') }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

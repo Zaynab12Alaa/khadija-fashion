@@ -1,0 +1,27 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blog — KHADIJA Admin{% endblock %}
+{% block content %}
+<div class="admin-page-header">
+  <div><h1>Blog Posts</h1><p>{{ posts|length }} posts</p></div>
+  <a href="{{ url_for('admin_blog_new') }}" class="btn-primary">+ New Post</a>
+</div>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead><tr><th>Title</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td><strong>{{ post.title }}</strong><br/><small style="color:#8a7068">{{ post.excerpt[:80] if post.excerpt else '' }}</small></td>
+        <td>{{ post.created.strftime('%b %d, %Y') }}</td>
+        <td class="actions">
+          <a href="{{ url_for('admin_blog_edit', pid=post.id) }}" class="act-edit">Edit</a>
+          <a href="{{ url_for('admin_blog_delete', pid=post.id) }}" class="act-del" onclick="return confirm('Delete?')">Delete</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3" style="text-align:center;padding:2rem;color:#8a7068">No posts yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'admin/base.html' %}
+{% block title %}Messages — KHADIJA Admin{% endblock %}
+{% block content %}
+<div class="admin-page-header">
+  <h1>Contact Messages</h1>
+  <p>{{ messages|length }} total messages</p>
+</div>
+<div class="messages-list admin-messages">
+  {% for msg in messages %}
+  <div class="msg-card">
+    <div class="msg-header">
+      <strong>{{ msg.name }}</strong>
+      <span class="msg-email">{{ msg.email }}</span>
+      <span class="msg-date">{{ msg.created.strftime('%b %d, %Y %H:%M') }}</span>
+    </div>
+    <p class="msg-body">{{ msg.message }}</p>
+  </div>
+  {% else %}
+  <p style="color:#8a7068;padding:2rem;text-align:center">No messages yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

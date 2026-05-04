@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }} — KHADIJA{% endblock %}
+{% block content %}
+<div class="product-detail">
+  <div class="pd-image">
+    {% if product.image %}
+    <img src="{{ url_for('static', filename='images/products/'+product.image) }}" alt="{{ product.name }}"/>
+    {% else %}
+    <div class="pd-placeholder">👗</div>
+    {% endif %}
+    {% if product.badge %}<span class="product-badge">{{ product.badge }}</span>{% endif %}
+  </div>
+  <div class="pd-info">
+    <p class="pd-cat">{{ product.category }}</p>
+    <h1 class="pd-name">{{ product.name }}</h1>
+    <p class="pd-price">${{ '%.2f'|format(product.price) }}</p>
+    <p class="pd-desc">{{ product.description }}</p>
+    <form action="{{ url_for('cart_add', pid=product.id) }}" method="POST" class="pd-form">
+      <div class="qty-row">
+        <label>Qty</label>
+        <input type="number" name="qty" value="1" min="1" max="10"/>
+      </div>
+      <button type="submit" class="btn-primary btn-full">Add to Cart 🛍️</button>
+    </form>
+    <a href="{{ url_for('shop') }}" class="back-link">← Back to Shop</a>
+  </div>
+</div>
+
+{% if related %}
+<section class="section">
+  <p class="section-label">✦ You May Also Like</p>
+  <div class="products-grid">
+    {% for p in related %}
+    <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-card">
+      <div class="product-img">
+        {% if p.image %}<img src="{{ url_for('static', filename='images/products/'+p.image) }}" alt="{{ p.name }}"/>
+        {% else %}<span class="product-emoji">👗</span>{% endif %}
+      </div>
+      <div class="product-info">
+        <p class="product-name">{{ p.name }}</p>
+        <p class="product-price">${{ '%.2f'|format(p.price) }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

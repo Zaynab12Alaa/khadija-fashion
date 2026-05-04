@@ -1,0 +1,40 @@
+{% extends 'admin/base.html' %}
+{% block title %}Products — KHADIJA Admin{% endblock %}
+{% block content %}
+<div class="admin-page-header">
+  <div>
+    <h1>Products</h1>
+    <p>{{ products|length }} total products</p>
+  </div>
+  <a href="{{ url_for('admin_product_new') }}" class="btn-primary">+ Add Product</a>
+</div>
+
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td>
+          {% if p.image %}<img src="{{ url_for('static', filename='images/products/'+p.image) }}" class="table-thumb"/>
+          {% else %}<span style="font-size:2rem">👗</span>{% endif %}
+        </td>
+        <td><strong>{{ p.name }}</strong></td>
+        <td><span class="tag">{{ p.category }}</span></td>
+        <td>${{ '%.2f'|format(p.price) }}</td>
+        <td>{% if p.badge %}<span class="badge">{{ p.badge }}</span>{% endif %}</td>
+        <td><span class="status {% if p.in_stock %}status-ok{% else %}status-off{% endif %}">{% if p.in_stock %}In Stock{% else %}Out{% endif %}</span></td>
+        <td class="actions">
+          <a href="{{ url_for('admin_product_edit', pid=p.id) }}" class="act-edit">Edit</a>
+          <a href="{{ url_for('admin_product_delete', pid=p.id) }}" class="act-del" onclick="return confirm('Delete this product?')">Delete</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" style="text-align:center;padding:2rem;color:#8a7068;">No products yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

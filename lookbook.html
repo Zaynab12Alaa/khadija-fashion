@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Lookbook — KHADIJA{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Lookbook</h1>
+  <p class="page-sub">Visual stories from every season.</p>
+</div>
+<section class="section">
+  <div class="lookbook-grid lookbook-full">
+    {% for item in items %}
+    <div class="lookbook-card">
+      {% if item.image %}<img src="{{ url_for('static', filename='images/products/'+item.image) }}" alt="{{ item.title }}"/>
+      {% else %}<div class="lookbook-placeholder">✨</div>{% endif %}
+      <div class="lookbook-info"><p>{{ item.title }}</p><small>{{ item.season }}</small></div>
+    </div>
+    {% else %}
+    <p style="color:#8a7068;text-align:center;padding:3rem;grid-column:1/-1;">Lookbook coming soon...</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

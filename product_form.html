@@ -1,0 +1,53 @@
+{% extends 'admin/base.html' %}
+{% block title %}{% if product %}Edit{% else %}New{% endif %} Product — KHADIJA{% endblock %}
+{% block content %}
+<div class="admin-page-header">
+  <h1>{% if product %}Edit Product{% else %}Add New Product{% endif %}</h1>
+  <a href="{{ url_for('admin_products') }}" class="btn-ghost">← Back</a>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data" class="admin-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Product Name *</label>
+        <input type="text" name="name" value="{{ product.name if product else '' }}" required/>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <input type="text" name="category" value="{{ product.category if product else '' }}" placeholder="e.g. Evening Wear"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Price (USD) *</label>
+        <input type="number" name="price" step="0.01" value="{{ product.price if product else '' }}" required/>
+      </div>
+      <div class="form-group">
+        <label>Badge (optional)</label>
+        <input type="text" name="badge" value="{{ product.badge if product else '' }}" placeholder="New / Bestseller / Limited"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" rows="4">{{ product.description if product else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Product Image</label>
+      <input type="file" name="image" accept="image/*"/>
+      {% if product and product.image %}
+      <p class="current-img">Current: <img src="{{ url_for('static', filename='images/products/'+product.image) }}" style="height:60px;vertical-align:middle;margin-left:.5rem;border-radius:4px;"/></p>
+      {% endif %}
+    </div>
+    <div class="form-group checkbox-group">
+      <label>
+        <input type="checkbox" name="in_stock" {% if not product or product.in_stock %}checked{% endif %}/> In Stock
+      </label>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">{% if product %}Save Changes{% else %}Add Product{% endif %}</button>
+      <a href="{{ url_for('admin_products') }}" class="btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
